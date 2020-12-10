@@ -1,3 +1,4 @@
+import 'package:countries_info/views/widgets/display_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:countries_info/theme/colors.dart';
 import 'package:countries_info/models/country.dart';
@@ -19,7 +20,7 @@ class _DetailsCardState extends State<DetailsCard> {
           mainAxisSize: MainAxisSize.min,
           children: [
             _nameAndSubregion(),
-            // _displayFlag(),
+            _displayFlag(),
             _countryDescription(),
           ],
         ),
@@ -49,6 +50,19 @@ class _DetailsCardState extends State<DetailsCard> {
       padding: const EdgeInsets.all(10.0),
       child: Text(
         widget.country.countryDescription(),
+      ),
+    );
+  }
+
+  Widget _displayFlag() {
+    Size _size = MediaQuery.of(context).size;
+    double _width = _size.width * 0.95;
+
+    return Container(
+      width: _width,
+      child: DisplaySvg(
+        svgUrl: widget.country.flag,
+        size: Size(900, 200),
       ),
     );
   }
