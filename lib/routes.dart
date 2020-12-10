@@ -1,5 +1,7 @@
+import 'package:countries_info/models/country.dart';
 import 'package:countries_info/views/pages/about.dart';
 import 'package:countries_info/views/pages/countries.dart';
+import 'package:countries_info/views/pages/countryDetail.dart';
 import 'package:countries_info/views/pages/landing.dart';
 import 'package:flutter/material.dart';
 
@@ -36,6 +38,14 @@ class AppRoutes {
       /* TODO: add case for countryDetail
       you can extract parameters from settings.arguments if necessary 
       https://flutter.dev/docs/cookbook/navigation/navigate-with-arguments#alternatively-extract-the-arguments-using-ongenerateroute*/
+      case countryDetail:
+        final Country _country = settings.arguments;
+        return MaterialPageRoute(
+          builder: (BuildContext context) => CountryDetailPage(
+            country: _country,
+          ),
+          settings: settings,
+        );
       default:
         return MaterialPageRoute(
           builder: (BuildContext context) => LandingPage(),

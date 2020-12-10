@@ -1,8 +1,9 @@
 import 'package:countries_info/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/all.dart';
 
 void main() {
-  runApp(PalotaCountriesAssessmentApp());
+  runApp(ProviderScope(child: PalotaCountriesAssessmentApp()));
 }
 
 class PalotaCountriesAssessmentApp extends StatelessWidget {
