@@ -1,3 +1,4 @@
+import 'package:countries_info/models/country.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:countries_info/routes.dart';
@@ -6,7 +7,7 @@ import 'package:countries_info/views/widgets/country_tile.dart';
 import 'package:countries_info/services/countries_future_provider.dart';
 
 class CountriesPage extends ConsumerWidget {
-
+  final TextEditingController _searchBarText = TextEditingController();
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     return Scaffold(
@@ -28,6 +29,10 @@ class CountriesPage extends ConsumerWidget {
           Size _size = MediaQuery.of(context).size;
           double _searchBarHight = _size.height * 0.10;
           double _listViewHight = _size.height * 0.80;
+          List<Country> _countryList = (_searchBarText.text.isEmpty)
+              ? countries
+              : _searchCountries(countries);
+
           return ListView(
             children: [
               Container(
@@ -37,7 +42,7 @@ class CountriesPage extends ConsumerWidget {
               Container(
                 height: _listViewHight,
                 child: ListView(
-                  children: countries
+                  children: _countryList
                       .map((country) => CountryTile(
                             country: country,
                             key: ValueKey(country.alpha3Code),
@@ -50,6 +55,25 @@ class CountriesPage extends ConsumerWidget {
         },
       ),
     );
+  }
+
+  List<Country> _searchCountries(List<Country> _countries) {
+    List<Country> _newCountriesList = [];
+    RegExp _searchPattern = new RegExp(
+      r'' + '${_searchBarText.text}*',
+      caseSensitive: false,
+      multiLine: false,
+    );
+
+    _newCountriesList = _countries
+        .where(
+          (element) => element.name.contains(
+            _searchPattern,
+          ),
+        )
+        .toList();
+
+    return _newCountriesList;
   }
 
   Widget _searchBar(BuildContext context) {
@@ -69,6 +93,10 @@ class CountriesPage extends ConsumerWidget {
               hintText: 'Search Countries',
               border: InputBorder.none,
             ),
+            onChanged: (value) {
+              print(value);
+              _searchBarText.text = value;
+            },
           ),
         ),
         decoration: BoxDecoration(
